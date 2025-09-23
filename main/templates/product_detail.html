@@ -1,20 +1,26 @@
-<h1>{{ product.name }}</h1>
-<img src="{{ product.thumbnail }}" alt="{{ product.name }}" width="240" style="object-fit:cover;">
-<p><strong>Category:</strong> {{ product.category }}</p>
-<p><strong>Size:</strong> {{ product.get_size_display }}</p>
-<p><strong>Stock:</strong> {{ product.stock }} ({{ product.stock_status }})</p>
-<p><strong>Featured:</strong> {{ product.is_featured }}</p>
-<p><strong>On Sale:</strong> {{ product.for_sale }}</p>
-
-<p><strong>Price:</strong>
-  {% if product.for_sale %}
-    <s>Rp {{ product.price }}</s> → <strong>Rp {{ product.discount_status }}</strong>
-  {% else %}
-    <strong>Rp {{ product.price }}</strong>
-  {% endif %}
-</p>
-
-<p><strong>Description:</strong><br>{{ product.description }}</p>
-
-<p>Data: <a href="{% url 'show_xml_by_id' product.pk %}">XML</a> •
-        <a href="{% url 'show_json_by_id' product.pk %}">JSON</a></p>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><title>{{ product.name }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <p><a href="{% url 'product_list' %}">← Back</a></p>
+  <h1>{{ product.name }}</h1>
+  <img src="{{ product.thumbnail }}" alt="{{ product.name }}" width="240" style="object-fit:cover;">
+  <p><strong>Category:</strong> {{ product.category }}</p>
+  <p><strong>Size:</strong> {{ product.get_size_display }}</p>
+  <p><strong>Stock:</strong> {{ product.stock }} ({{ product.stock_status }})</p>
+  <p><strong>Featured:</strong> {{ product.is_featured }}</p>
+  <p><strong>On Sale:</strong> {{ product.for_sale }}</p>
+  <p><strong>Price:</strong>
+    {% if product.for_sale %}
+      <s>Rp {{ product.price }}</s> → <strong>Rp {{ product.discount_status }}</strong>
+    {% else %}
+      <strong>Rp {{ product.price }}</strong>
+    {% endif %}
+  </p>
+  <p><strong>Description:</strong><br>{{ product.description }}</p>
+  <p>Data: <a href="{% url 'show_xml_by_id' product.pk %}">XML</a> • <a href="{% url 'show_json_by_id' product.pk %}">JSON</a></p>
+</body>
+</html>

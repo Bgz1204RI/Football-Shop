@@ -1,22 +1,72 @@
-<ul>
-  {% for p in products %}
-    <li>
-      <img src="{{ p.thumbnail }}" alt="{{ p.name }}" width="60" height="60" style="object-fit:cover;vertical-align:middle;">
-      <strong>{{ p.name }}</strong>
-      {% if p.is_featured %}<span style="color:#d97706;">★ Featured</span>{% endif %}
-      {% if p.for_sale %}<span style="color:#16a34a;">Sale</span>{% endif %}
-      — {{ p.category }} • Size: {{ p.get_size_display }} • Stock: {{ p.stock }} ({{ p.stock_status }})
-      —
-      {% if p.for_sale %}
-        <s>Rp {{ p.price }}</s> → <strong>Rp {{ p.discount_status }}</strong>
-      {% else %}
-        <strong>Rp {{ p.price }}</strong>
-      {% endif %}
-      — <a href="{% url 'product_detail' p.pk %}">Detail</a>
-      — <a href="{% url 'show_xml_by_id' p.pk %}">XML</a>
-      — <a href="{% url 'show_json_by_id' p.pk %}">JSON</a>
-    </li>
-  {% empty %}
-    <li>No products yet.</li>
-  {% endfor %}
-</ul>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Football Shop — Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 24px; }
+    header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .badges { margin-left:6px; font-size:0.9em; }
+    .featured { color:#d97706; }
+    .sale { color:#16a34a; }
+    ul { list-style: none; padding: 0; }
+    li { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #eee; }
+    img.thumb { width:60px; height:60px; object-fit:cover; border-radius:8px; }
+    .price s { opacity:0.7; }
+    .meta { color:#555; font-size:0.95em; }
+    .endpoints a { margin-left:8px; font-size:0.9em; }
+    .toplinks a { margin-right:10px; text-decoration:none; }
+    .empty { color:#666; font-style:italic; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Football Shop — Products</h1>
+    <nav class="toplinks">
+      <a href="{% url 'product_add' %}">➕ Add Product</a>
+      <a href="{% url 'show_xml' %}">XML (all)</a>
+      <a href="{% url 'show_json' %}">JSON (all)</a>
+    </nav>
+  </header>
+
+  <p class="meta">Total products: {{ products|length }}</p>
+
+  <ul>
+    {% for p in product %}
+      <li>
+        <img class="thumb" src="{{ p.thumbnail }}" alt="{{ p.name }}">
+        <div style="flex:1">
+          <div>
+            <strong>{{ p.name }}</strong>
+            <span class="badges">
+              {% if p.is_featured %}<span class="featured">★ Featured</span>{% endif %}
+              {% if p.for_sale %}<span class="sale">Sale</span>{% endif %}
+            </span>
+          </div>
+
+          <div class="meta">
+            {{ p.category }} • Size: {{ p.get_size_display }} • Stock: {{ p.stock }} ({{ p.stock_status }})
+          </div>
+
+          <div class="price" style="margin-top:4px;">
+            {% if p.for_sale %}
+              <s>Rp {{ p.price }}</s> → <strong>Rp {{ p.discount_status }}</strong>
+            {% else %}
+              <strong>Rp {{ p.price }}</strong>
+            {% endif %}
+          </div>
+
+          <div class="endpoints" style="margin-top:6px;">
+            <a href="{% url 'product_detail' p.pk %}">Detail</a> ·
+            <a href="{% url 'show_xml_by_id' p.pk %}">XML</a> ·
+            <a href="{% url 'show_json_by_id' p.pk %}">JSON</a>
+          </div>
+        </div>
+      </li>
+    {% empty %}
+      <li class="empty">No products yet. <a href="{% url 'product_add' %}">Add one?</a></li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

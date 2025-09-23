@@ -27,7 +27,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 ALLOWED_HOSTS = ["localhost", "127.0.0.1","bagas-zharif-footballshop.pbp.cs.ui.ac.id"]
 

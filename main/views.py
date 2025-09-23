@@ -5,8 +5,8 @@ from .models import Product
 from .forms import ProductForm
 
 def product_list(request):
-    products = Product.objects.all().order_by("-id")
-    return render(request, "product_list")
+    product = Product.objects.all().order_by("-id")
+    return render(request, "product_list.html", {"product": product})
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)

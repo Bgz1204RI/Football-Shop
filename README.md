@@ -44,12 +44,12 @@
 #           logged-in user’s browser into submitting malicious state-changing requests (classic Cross-Site Request Forgery).
 
 # Q5 : Explain how you implemented the Assignment 3 checklist step-by-step (not just following the tutorial).
-#         : 1) Created ProductForm in main/forms.py with my actual fields (name, price, description, thumbnail, category, size, stock, is_featured, for_sale);
-#           2) Added views: product_list, product_detail, product_create (GET shows form, POST validates/saves, redirects);
-#           3) Implemented data-delivery views: show_xml, show_json, show_xml_by_id, show_json_by_id using serializers.serialize(...);
-#           4) Wired URLs in main/urls.py for pages (/, product/add/, product/<id>/) and data (/xml/, /json/, /xml/<id>/, /json/<id>/);
-#           5) Built templates: product_list.html (links to add/detail/XML/JSON), product_form.html (with {% csrf_token %}), product_detail.html (shows all fields);
-#           6) Verified GET/POST flow and serialization in the browser and Postman; 7) git add/commit/push and updated README with endpoints and screenshots.
+#         : 1. Created ProductForm in main/forms.py with my actual fields (name, price, description, thumbnail, category, size, stock, is_featured, for_sale);
+#           2. Added views: product_list, product_detail, product_create (GET shows form, POST validates/saves, redirects);
+#           3. Implemented data-delivery views: show_xml, show_json, show_xml_by_id, show_json_by_id using serializers.serialize(...);
+#           4. Wired URLs in main/urls.py for pages (/, product/add/, product/<id>/) and data (/xml/, /json/, /xml/<id>/, /json/<id>/);
+#           5. Built templates: product_list.html (links to add/detail/XML/JSON), product_form.html (with {% csrf_token %}), product_detail.html (shows all fields);
+#           6. Verified GET/POST flow and serialization in the browser and Postman; 7. git add/commit/push and updated README with endpoints and screenshots.
 
 # Q6 : Do you have any feedback for the teaching assistants for Tutorial 2?
 #         : Clear and helpful—one suggestion: include a short “common errors” slide (serialize vs seralize typo, missing {% csrf_token %}, filter vs get for serializers)
