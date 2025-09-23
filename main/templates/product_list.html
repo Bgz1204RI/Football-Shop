@@ -1,0 +1,22 @@
+<ul>
+  {% for p in products %}
+    <li>
+      <img src="{{ p.thumbnail }}" alt="{{ p.name }}" width="60" height="60" style="object-fit:cover;vertical-align:middle;">
+      <strong>{{ p.name }}</strong>
+      {% if p.is_featured %}<span style="color:#d97706;">★ Featured</span>{% endif %}
+      {% if p.for_sale %}<span style="color:#16a34a;">Sale</span>{% endif %}
+      — {{ p.category }} • Size: {{ p.get_size_display }} • Stock: {{ p.stock }} ({{ p.stock_status }})
+      —
+      {% if p.for_sale %}
+        <s>Rp {{ p.price }}</s> → <strong>Rp {{ p.discount_status }}</strong>
+      {% else %}
+        <strong>Rp {{ p.price }}</strong>
+      {% endif %}
+      — <a href="{% url 'product_detail' p.pk %}">Detail</a>
+      — <a href="{% url 'show_xml_by_id' p.pk %}">XML</a>
+      — <a href="{% url 'show_json_by_id' p.pk %}">JSON</a>
+    </li>
+  {% empty %}
+    <li>No products yet.</li>
+  {% endfor %}
+</ul>
