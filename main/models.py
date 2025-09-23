@@ -1,6 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Product(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     SIZE_CHOICES = [
         ("S", "Small"),
         ("M", "Medium"),
@@ -14,7 +16,6 @@ class Product(models.Model):
     thumbnail = models.URLField(blank=True)
     category = models.CharField(max_length=50)
 
-    # Defaults added so existing rows can be populated automatically
     size = models.CharField(max_length=2, choices=SIZE_CHOICES, default="M")
     stock = models.IntegerField(default=0)
 

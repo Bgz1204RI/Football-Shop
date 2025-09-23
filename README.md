@@ -24,7 +24,7 @@
 #         : It’s “batteries-included” (ORM, auth, admin, forms, templates, security), has clear MVT structure and strong conventions, excellent docs, and a mature ecosystem—letting beginners build secure full-stack apps quickly while learning core web concepts without wiring many libraries manually.
 
 # Q6 : Do you have any feedback for the teaching assistant for Tutorial 1 that you previously completed?
-#         : Great pacing and demos; suggestions: add a quick pitfalls slide (`urls.py` patterns, `INSTALLED_APPS` misses), show one mini deploy end-to-end, and provide a final checklist (repo structure, one view + template works, runserver OK) for self-verification.
+#         : 
 
 # Assignment 3
 # Q1 : Why do we need data delivery (endpoints) in a platform?
@@ -52,5 +52,34 @@
 #           6. Verified GET/POST flow and serialization in the browser and Postman; 7. git add/commit/push and updated README with endpoints and screenshots.
 
 # Q6 : Do you have any feedback for the teaching assistants for Tutorial 2?
-#         : Clear and helpful—one suggestion: include a short “common errors” slide (serialize vs seralize typo, missing {% csrf_token %}, filter vs get for serializers)
-#           and a tiny Postman demo so everyone captures the four endpoint screenshots correctly.
+#         : 
+
+# Assignment 4
+# Q1 : What is Django's AuthenticationForm? Explain its advantages and disadvantages.
+#         : A built-in login form that validates a username/password against Django’s auth backends and exposes     cleaned_data and non-field errors for failed logins.
+#           Advantages: well-tested, integrates with request (e.g., AuthenticationForm(request, data=...)), good error messages, easy to drop into views/templates, works with CSRF/session middleware.
+#           Disadvantages: fixed fields (username/password) and default auth flow; customizing UX (email login, extra fields, MFA, rate-limit) requires subclassing or custom forms/views.
+
+# Q2 : What is the difference between authentication and authorization? How does Django implement the two concepts?
+#         : Authentication answers “who are you?”; authorization answers “what are you allowed to do?”.
+#           Django authenticates via auth backends + session middleware (populates request.user / request.session); it authorizes via permissions, groups, is_staff/is_superuser, decorators/mixins
+#           (e.g., @login_required, @permission_required, User.has_perm), and custom object-level checks in views.
+
+# Q3 : What are the benefits and drawbacks of using sessions and cookies in storing the state of a web application?
+#         : Sessions (server-side): pros—less exposure of data to the client, can store richer state, easy invalidation; cons—server storage/DB hits, scaling/replication concerns.
+#           Cookies (client-side): pros—simple, stateless server, no DB lookups for tiny flags; cons—size limits (~4KB), sent on every request, client-visible/modifiable, must be signed/secured to prevent tampering.
+
+# Q4 : In web development, is the usage of cookies secure by default, or is there any potential risk that we should be aware of? How does Django handle this problem?
+#         : Not secure by default—risks include theft via XSS (if not HttpOnly), interception over HTTP (if not Secure), CSRF, and fixation/tampering.
+#           Django mitigations include HttpOnly/Secure/SameSite cookie settings (SESSION_COOKIE_HTTPONLY, SESSION_COOKIE_SECURE, SESSION_COOKIE_SAMESITE; likewise for CSRF cookies),
+#           per-request CSRF tokens, signed cookies/session engines, and easy HTTPS enforcement (SECURE_SSL_REDIRECT).
+
+# Q5 : Explain how you implemented the checklist above step-by-step (not just following the tutorial).
+#         : 1. Added owner = ForeignKey(User, on_delete=CASCADE) to Product and resolved existing rows by assigning a default user id during makemigrations; ran migrate.
+#           2. Built register/login/logout views using UserCreationForm and AuthenticationForm; login sets a "last_login" cookie, logout deletes it.
+#           3. Protected pages with @login_required and filtered data per user: product_list shows Product.objects.filter(owner=request.user); product_detail/get uses owner scoping.
+#           4. On create, set obj = form.save(commit=False); obj.owner = request.user; obj.save(); ensured form fields match the model.
+#           5. Wired URLs: /register, /login, /logout plus existing list/add/detail and XML/JSON (also scoped to owner).
+#           6. Made templates: register.html, login.html, and updated product_list header to show {{ user.username }} and {{ last_login }} with a Logout link.
+#           7. Created two accounts and added three products per account to verify per-user isolation; tested /, /product/add/, /product/<id>/, /xml/, /json/, and by-ID endpoints.
+#           8. Committed and pushed changes; verified behavior with DEBUG off and confirmed cookies and session flow end-to-end.
