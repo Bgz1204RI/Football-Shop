@@ -31,6 +31,10 @@ DEBUG = True
 PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
 ALLOWED_HOSTS = ["localhost", "127.0.0.1","bagas-zharif-footballshop.pbp.cs.ui.ac.id"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://bagas-zharif-footballshop.pbp.cs.ui.ac.id",
+]
+
 # Application definition
 
 INSTALLED_APPS = [
