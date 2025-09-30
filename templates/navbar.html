@@ -1,0 +1,107 @@
+<nav class="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
+
+      <!-- Brand -->
+      <a href="{% url 'main:product_list' %}" class="flex items-center gap-2">
+        <span class="inline-block rounded-md bg-emerald-600 px-2 py-1 text-xs font-semibold text-white">FS</span>
+        <span class="text-lg font-semibold text-gray-900">
+          Football <span class="text-emerald-600">Shop</span>
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden items-center gap-6 md:flex">
+        <a href="{% url 'main:product_list' %}" class="text-sm font-medium text-gray-700 hover:text-gray-900">Home</a>
+        <a href="{% url 'main:product_create' %}" class="text-sm font-medium text-gray-700 hover:text-gray-900">Create Product</a>
+        <a href="{% url 'main:about' %}" class="text-sm font-medium text-gray-700 hover:text-gray-900">About</a>
+      </div>
+
+      <!-- Desktop User Actions -->
+      <div class="hidden items-center gap-3 md:flex">
+        {% if user.is_authenticated %}
+          <div class="text-right leading-tight">
+            <div class="text-sm font-semibold text-gray-900">{{ user.username }}</div>
+            <div class="text-xs text-gray-500">{{ npm|default:"Student" }} · {{ class|default:"Class" }}</div>
+          </div>
+          <a href="{% url 'main:logout' %}"
+             class="inline-flex items-center rounded-lg border border-red-500 px-3 py-1.5 text-sm font-semibold text-red-600 hover:bg-red-50">
+            Logout
+          </a>
+        {% else %}
+          <a href="{% url 'main:login' %}"
+             class="inline-flex items-center rounded-lg px-3 py-1.5 text-sm font-semibold text-gray-700 hover:bg-gray-100">
+            Log in
+          </a>
+          <a href="{% url 'main:register' %}"
+             class="inline-flex items-center rounded-lg bg-emerald-600 px-3.5 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700">
+            Register
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Mobile toggle -->
+      <button type="button"
+              class="inline-flex items-center rounded-md p-2 text-gray-600 hover:bg-gray-100 md:hidden"
+              aria-controls="mobileMenu" aria-expanded="false" id="mobileToggle">
+        <span class="sr-only">Open menu</span>
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path id="icon-bars" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"/>
+          <path id="icon-x" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="hidden border-t bg-white md:hidden">
+    <div class="space-y-1 px-4 py-3">
+      <a href="{% url 'main:product_list' %}" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">Home</a>
+      <a href="{% url 'main:product_create' %}" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">Create Product</a>
+      <a href="{% url 'main:about' %}" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">About</a>
+    </div>
+
+    <div class="border-t px-4 py-3">
+      {% if user.is_authenticated %}
+        <div class="mb-3 leading-tight">
+          <div class="text-sm font-semibold text-gray-900">{{ user.username }}</div>
+          <div class="text-xs text-gray-500">{{ npm|default:"Student" }} · {{ class|default:"Class" }}</div>
+        </div>
+        <a href="{% url 'main:logout' %}"
+           class="block w-full rounded-lg border border-red-500 px-3 py-2 text-center text-sm font-semibold text-red-600 hover:bg-red-50">
+          Logout
+        </a>
+      {% else %}
+        <a href="{% url 'main:login' %}"
+           class="mb-2 block w-full rounded-lg px-3 py-2 text-center text-sm font-semibold text-gray-700 hover:bg-gray-100">
+          Log in
+        </a>
+        <a href="{% url 'main:register' %}"
+           class="block w-full rounded-lg bg-emerald-600 px-3 py-2 text-center text-sm font-semibold text-white hover:bg-emerald-700">
+          Register
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<script>
+  (function () {
+    const btn = document.getElementById('mobileToggle');
+    const menu = document.getElementById('mobileMenu');
+    const bars = document.getElementById('icon-bars');
+    const x = document.getElementById('icon-x');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', () => {
+      const isHidden = menu.classList.toggle('hidden');
+      const expanded = !isHidden;
+      btn.setAttribute('aria-expanded', String(expanded));
+      // swap icon
+      bars.classList.toggle('hidden', expanded);
+      x.classList.toggle('hidden', !expanded);
+    });
+  })();
+</script>

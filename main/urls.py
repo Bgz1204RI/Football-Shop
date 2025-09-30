@@ -2,10 +2,14 @@
 from django.urls import path
 from . import views
 
+app_name = "main"
+
 urlpatterns = [
     path("", views.product_list, name="product_list"),
-    path("product/add/", views.product_create, name="product_add"),
+    path("product/create/", views.product_create, name="product_create"),
     path("product/<int:pk>/", views.product_detail, name="product_detail"),
+    path("product/<int:id>/edit/", views.product_edit, name="product_edit"),
+    path("product/<int:id>/delete/", views.product_delete, name="product_delete"),
 
     path("register/", views.register, name="register"),
     path("login/", views.login_user, name="login"),

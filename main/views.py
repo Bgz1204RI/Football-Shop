@@ -13,7 +13,7 @@ def register(request):
     form = UserCreationForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect("login")
+        return redirect("main:login")
     return render(request, "register.html", {"form": form})
 
 def login_user(request):
@@ -21,32 +21,32 @@ def login_user(request):
     if form.is_valid():
         user = form.get_user()
         login(request, user)
-        response = HttpResponseRedirect(reverse("product_list"))
+        response = HttpResponseRedirect(reverse("main:product_list"))
         response.set_cookie("last_login", str(timezone.now()))
         return response
     return render(request, "login.html", {"form": form})
 
 def logout_user(request):
     logout(request)
-    response = redirect("login")
+    response = redirect("main:login")
     response.delete_cookie("last_login")
     return response
 
-@login_required(login_url="login")
+@login_required(login_url="main:login")
 def product_list(request):
-    product = Product.objects.filter(owner=request.user).order_by("-id")
+    products = Product.objects.all().order_by("-id")  
     context = {
-        "product": product,
+        "product": products,
         "last_login": request.COOKIES.get("last_login", "never"),
     }
     return render(request, "product_list.html", context)
 
-@login_required(login_url="login")
+@login_required(login_url="main:login")
 def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk, owner=request.user)
+    product = get_object_or_404(Product, pk=pk)  
     return render(request, "product_detail.html", {"product": product})
 
-@login_required(login_url="login")
+@login_required(login_url="main:login")
 def product_create(request):
     if request.method == "POST":
         form = ProductForm(request.POST)
@@ -54,29 +54,50 @@ def product_create(request):
             obj = form.save(commit=False)
             obj.owner = request.user
             obj.save()
-            return redirect("product_list")
+            return redirect("main:product_list")
     else:
         form = ProductForm()
     return render(request, "product_form.html", {"form": form})
 
-@login_required(login_url="login")
+@login_required(login_url="main:login")
+def product_edit(request, id):
+    product = get_object_or_404(Product, pk=id)  # no owner check
+    if request.method == "POST":
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect("main:product_detail", pk=product.pk)
+    else:
+        form = ProductForm(instance=product)
+    return render(request, "product_form.html", {"form": form, "product": product})
+
+@login_required(login_url="main:login")
+def product_delete(request, id):
+    product = get_object_or_404(Product, pk=id)  
+    if request.method == "POST":
+        product.delete()
+        return redirect("main:product_list")
+    return render(request, "product_confirm_delete.html", {"product": product})
+
+# XML/JSON endpoints: expose all
+@login_required(login_url="main:login")
 def show_xml(request):
-    data = Product.objects.filter(owner=request.user)
+    data = Product.objects.all()
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
-@login_required(login_url="login")
+@login_required(login_url="main:login")
 def show_json(request):
-    data = Product.objects.filter(owner=request.user)
+    data = Product.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
-@login_required(login_url="login")
+@login_required(login_url="main:login")
 def show_xml_by_id(request, id):
-    data = Product.objects.filter(pk=id, owner=request.user)
+    data = Product.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
-@login_required(login_url="login")
+@login_required(login_url="main:login")
 def show_json_by_id(request, id):
-    data = Product.objects.filter(pk=id, owner=request.user)
+    data = Product.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def about(request):

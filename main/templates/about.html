@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>About</title>
-</head>
-<body>
+{% extends "main.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
     <h1>{{ app_name }}</h1>
     <p>Name: {{ student_name }}</p>
     <p>Class: {{ student_class }}</p>
-</body>
-</html>
+{% endblock %}

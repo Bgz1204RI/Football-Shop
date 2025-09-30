@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Football Shop{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {% load static %}
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Your global styles -->
+  <link rel="stylesheet" href="{% static 'global.css' %}">
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  {% include "navbar.html" %}
+
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-8">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="bg-white border-t border-gray-200 mt-12 py-6">
+    <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+      © {{ year|default:2025 }} Football Shop. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>

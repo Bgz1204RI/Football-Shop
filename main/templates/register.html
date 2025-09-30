@@ -1,13 +1,26 @@
-<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Register</title></head>
-<body>
-  <h1>Register</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-  </form>
-  <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
-</body>
-</html>
+{% extends "main.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="mx-auto mt-12 w-full max-w-md px-4">
+  <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+    <h1 class="mb-6 text-center text-2xl font-bold text-gray-900">Create an Account</h1>
+
+    <form method="post" class="space-y-4 form-style">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit"
+              class="w-full rounded-lg bg-emerald-600 px-4 py-2 text-white font-medium hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        Register
+      </button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+      Already have an account?
+      <a href="{% url 'main:login' %}" class="font-semibold text-emerald-700 hover:text-emerald-800">
+        Login here
+      </a>
+    </p>
+  </div>
+</div>
+{% endblock %}
