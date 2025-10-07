@@ -21,4 +21,14 @@ urlpatterns = [
     path("json/<int:id>/", views.show_json_by_id, name="show_json_by_id"),
     path("about/", views.about, name="about"),
 
+    path("ajax/products/", views.products_list_ajax, name="products_list_ajax"),
+    path("ajax/product/<int:pk>/", views.product_get_ajax, name="product_get_ajax"),
+    path("ajax/product/create/", views.product_create_ajax, name="product_create_ajax"),
+    path("ajax/product/<int:pk>/update/", views.product_update_ajax, name="product_update_ajax"),
+    path("ajax/product/<int:pk>/delete/", views.product_delete_ajax, name="product_delete_ajax"),
+
+    # AJAX auth <remember>
+    path("ajax/auth/login/", views.ajax_login, name="api_login"),
+    path("ajax/auth/register/", views.ajax_register, name="api_register"),
+    path("ajax/auth/logout/", views.ajax_logout, name="api_logout"),
 ]

@@ -167,3 +167,44 @@ Order of precedence (highest → lowest):
     Testing at breakpoints:
     Tested mobile (≤375px), tablet (~768px), and desktop (≥1024px) in browser dev tools to confirm no overflow, readable text, and accessible touch targets.
 
+# Assignment 6
+# Q1 : What is the difference between synchronous request and asynchronous request?
+Synchronous: the browser waits, the whole page is blocked until the server responds, often causing a full page reload.
+
+Asynchronous (AJAX): the browser sends a background request (e.g., fetch); the page stays interactive and only the relevant part of the DOM is updated when the response arrives—no full reload.
+
+# Q2 : How does AJAX work in Django (request–response flow)?
+
+JS (fetch) sends an HTTP request to a Django view (usually an endpoint that returns JSON).
+
+The Django view reads the request (and JSON body), performs logic/DB operations, and returns JsonResponse({...}).
+
+The JS promise resolves; success/error handlers update the DOM (render list, close modals, show toasts) without reloading the page.
+
+For unsafe methods (POST/PATCH/DELETE), JS includes the CSRF token (header X-CSRFToken) so Django’s CSRF middleware accepts the request.
+
+# Q3 : What are the advantages of using AJAX compared to regular rendering in Django?
+
+Speed & efficiency: update only what changed; avoid full page reloads and re-rendering templates.
+
+Smoother UX: modals, inline edits, instant feedback (toasts), background loading states.
+
+Lower bandwidth: smaller JSON payloads vs. full HTML pages.
+
+Finer control: front-end state (Loading/Empty/Error), optimistic updates, granular error handling.
+
+# Q4 : How do you ensure security when using AJAX for Login and Register features in Django?
+
+CSRF protection: send the CSRF cookie in X-CSRFToken for POST/PATCH/DELETE.
+
+Server-side validation: use authenticate, create_user, and validate_password; never trust client input.
+
+Sessions & cookies: rely on Django session cookies (HttpOnly, SameSite) rather than exposing tokens to JS.
+
+# Q5 : How does AJAX affect user experience (UX) on websites?
+
+More responsive: actions feel instant; no disruptive page reloads.
+
+Clear feedback: visible Loading, Empty, and Error states.
+
+Continuity: modals keep users on the same page; lists auto-refresh after actions.

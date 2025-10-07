@@ -25,5 +25,47 @@
       © {{ year|default:2025 }} Football Shop. All rights reserved.
     </div>
   </footer>
+
+<!-- Login modal -->
+  <dialog id="modal-login" class="rounded-xl p-0 shadow-xl">
+    <form id="login-form" method="dialog" class="p-4 w-[92vw] max-w-sm">
+      <h3 class="text-lg font-semibold mb-3">Login</h3>
+      <label class="block text-sm mb-2">Username
+        <input id="login-username" class="w-full rounded border p-2" required>
+      </label>
+      <label class="block text-sm mb-4">Password
+        <input id="login-password" type="password" class="w-full rounded border p-2" required>
+      </label>
+      <div class="flex justify-end gap-2">
+        <button value="cancel" class="rounded border px-3 py-2">Cancel</button>
+        <button id="btn-login-submit" value="default" class="rounded bg-emerald-600 text-white px-3 py-2">Login</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Register modal -->
+  <dialog id="modal-register" class="rounded-xl p-0 shadow-xl">
+    <form id="register-form" method="dialog" class="p-4 w-[92vw] max-w-sm">
+      <h3 class="text-lg font-semibold mb-3">Register</h3>
+      <label class="block text-sm mb-2">Username
+        <input id="reg-username" class="w-full rounded border p-2" required>
+      </label>
+      <label class="block text-sm mb-4">Password
+        <input id="reg-password" type="password" class="w-full rounded border p-2" required>
+      </label>
+      <div class="flex justify-end gap-2">
+        <button value="cancel" class="rounded border px-3 py-2">Cancel</button>
+        <button id="btn-register-submit" value="default" class="rounded bg-emerald-600 text-white px-3 py-2">Register</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Buttons (e.g., in navbar) -->
+  <button id="btn-open-login" class="hidden md:inline rounded border px-3 py-2">Login</button>
+  <button id="btn-open-register" class="hidden md:inline rounded border px-3 py-2">Register</button>
+  <button id="btn-ajax-logout" class="hidden md:inline rounded border px-3 py-2">Logout</button>
+
+  {% include "toast.html" %}
+  <script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>

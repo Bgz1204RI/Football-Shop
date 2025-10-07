@@ -1,0 +1,60 @@
+{% load static %}
+<div 
+  id="toast-component"
+  role="status" aria-live="polite" aria-atomic="true"
+  class="fixed top-6 right-6 z-[9999] pointer-events-none
+         p-4 pr-12 rounded-xl shadow-xl border
+         bg-white text-slate-900 border-slate-300
+         opacity-0 translate-y-6 transition-all duration-300
+         flex items-start gap-3"
+>
+  <span id="toast-icon" class="text-2xl leading-none select-none">i</span>
+  <div class="min-w-[220px] max-w-[420px]">
+    <h3 id="toast-title" class="font-bold text-sm sm:text-base">This is a Sample Title</h3>
+    <p id="toast-message" class="text-[13px] sm:text-sm text-slate-700 line-clamp-3">
+      This is a Sample Message
+    </p>
+    <div class="mt-2 h-1 w-full bg-slate-200 rounded overflow-hidden">
+      <div id="toast-progress" class="h-full w-0 bg-green-600"></div>
+    </div>
+  </div>
+
+  <button
+    id="toast-close"
+    type="button"
+    class="absolute top-2.5 right-2.5 inline-flex h-7 w-7 items-center justify-center
+           rounded-md text-slate-500 hover:text-slate-700 focus:outline-none
+           focus:ring focus:ring-green-600/30 pointer-events-auto"
+    aria-label="Close notification"
+  >
+    ×
+  </button>
+</div>
+
+<script src="{% static 'js/toast.js' %}"></script>
+
+{# --- SAFER BLOCK: serialize Django messages as JSON so linters don't parse it as JS --- #}
+{% if messages %}
+  <script id="toast-queue" type="application/json">
+    [
+      {% for m in messages %}
+        {"level":"{{ m.tags|default:'info'|escapejs }}","text":"{{ m|escapejs }}"}{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ]
+  </script>
+  <script>
+    (function () {
+      const node = document.getElementById('toast-queue');
+      if (!node) return;
+      try {
+        const queue = JSON.parse(node.textContent || '[]');
+        const map = { success: 'success', error: 'error', warning: 'warning', info: 'info' };
+        queue.forEach(({ level, text }) => {
+          const type = map[level] || 'info';
+          const title = (level || 'Info').replace(/^./, c => c.toUpperCase());
+          window.showToast({ title, message: text, type });
+        });
+      } catch (_) { /* ignore */ }
+    })();
+  </script>
+{% endif %}

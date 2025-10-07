@@ -34,7 +34,9 @@ class Product(models.Model):
 
     def discount_status(self):
         if self.for_sale:
-            return int(self.price * 0.7)
+            return int(self.price * 0.92)
+        elif self.for_sale and self.is_featured:
+            return int(self.price * 0.87)
         return self.price
     
     
